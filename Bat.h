@@ -11,6 +11,8 @@ protected:
 
 	float minX = 0.f;
 	float maxX = 0.f;
+	float minY = 0.f;
+	float maxY = 0.f;
 
 public:
 	Bat(const std::string& name = "");

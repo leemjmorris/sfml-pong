@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "Bat.h"
 
-Bat::Bat(const std::string& name)
-	: GameObject(name)
+Bat::Bat(const std::string& name) : GameObject(name)
 {
 }
 
@@ -42,9 +41,9 @@ void Bat::SetOrigin(Origins preset)
 
 void Bat::Init()
 {
-	shape.setSize({100.f, 5.f});
+	shape.setSize({5.f, 100.f});
 	shape.setFillColor(sf::Color::White);
-	SetOrigin(Origins::TC);
+	SetOrigin(Origins::MR);
 }
 
 void Bat::Release()
@@ -54,18 +53,20 @@ void Bat::Release()
 void Bat::Reset()
 {
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	SetPosition({ bounds.width * 0.5f, bounds.height - 20.f });
+	SetPosition({ (bounds.width - bounds.width) + 20.f, bounds.height * 0.5f });
 
 	sf::Vector2f size = shape.getSize();
 	minX = bounds.left + size.x * 0.5f;
 	maxX = (bounds.left + bounds.width) - size.x * 0.5f;
+	minY = bounds.top + size.y * 0.5f;
+	maxY = (bounds.top + bounds.height) - size.y * 0.5f;
 }
 
 void Bat::Update(float dt)
 {
-	direction.x = InputMgr::GetAxis(Axis::Horizontal);
+	direction.y = InputMgr::GetAxis(Axis::Vertical);
 	sf::Vector2f pos = GetPosition() + direction * speed * dt;
-	pos.x = Utils::Clamp(pos.x, minX, maxX);
+	pos.y = Utils::Clamp(pos.y, minY, maxY);
 	SetPosition(pos);
 }
 

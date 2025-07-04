@@ -45,7 +45,7 @@ void Ball::Init()
 {
 	shape.setRadius(10.f);
 	shape.setFillColor(sf::Color::White);
-	SetOrigin(Origins::BC);
+	SetOrigin(Origins::ML);
 }
 
 void Ball::Release()
