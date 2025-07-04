@@ -15,6 +15,9 @@ protected:
 
 public:
 
+	SortingLayers sortingLayer = SortingLayers::Default;
+	int sortingOrder = 0;
+
 	GameObject(const std::string& name = "");
 	virtual ~GameObject();
 
@@ -34,7 +37,11 @@ public:
 	virtual void SetScale(const sf::Vector2f& s) { scale = s; }
 
 	sf::Vector2f GetOrigin() const { return origin; }
-	virtual void SetOrigin(const sf::Vector2f& o) { origin = o; }
+	virtual void SetOrigin(const sf::Vector2f& o) 
+	{ 
+		originPreset = Origins::Custom;
+		origin = o;
+	}
 	virtual void SetOrigin(Origins preset) { originPreset = preset; }
 
 	virtual void Init() = 0;
