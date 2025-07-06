@@ -41,11 +41,22 @@ void Ball::SetOrigin(Origins preset)
 	}
 }
 
+float Ball::GetRadius() const
+{
+	return shape.getRadius();
+}
+
+void Ball::SetBat(Bat* left, Bat* right)
+{
+	batLeft = left;
+	batRight = right;
+}
+
 void Ball::Init()
 {
 	shape.setRadius(10.f);
 	shape.setFillColor(sf::Color::White);
-	SetOrigin(Origins::ML);
+	SetOrigin(Origins::MC);
 }
 
 void Ball::Release()
@@ -74,7 +85,8 @@ void Ball::Update(float dt)
 {
 	sf::Vector2f pos = GetPosition() + direction * speed * dt;
 
-	if (pos.y < minY || pos.y > maxY)
+	float margin = shape.getRadius();
+	if (pos.y < minY + margin || pos.y > maxY - margin)
 	{
 		direction.y *= -1.f;
 	}
@@ -84,6 +96,7 @@ void Ball::Update(float dt)
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 		{
 			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
+			scene->AddScoreRight();
 			scene->SetGameOver();
 		}
 	}
@@ -93,17 +106,29 @@ void Ball::Update(float dt)
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 		{
 			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
+			scene->AddScoreLeft();
 			scene->SetGameOver();
 		}
 	}
 
-	if (bat != nullptr)
+	if (batLeft != nullptr)
 	{
-		const sf::FloatRect& batBounds = bat->GetGlobalBounds();
+		const sf::FloatRect& batBounds = batLeft->GetGlobalBounds();
+
 		if (shape.getGlobalBounds().intersects(batBounds))
 		{
-			pos.y = batBounds.top;
-			direction.y *= -1.f;
+			direction.x *= -1.f;
+			pos.x = batBounds.left + batBounds.width + shape.getRadius();
+		}		
+	}
+
+	if (batRight != nullptr)
+	{
+		const sf::FloatRect& bounds = batRight->GetGlobalBounds();
+		if (shape.getGlobalBounds().intersects(bounds))
+		{
+			direction.x *= -1.f;
+			pos.x = bounds.left - shape.getRadius();
 		}
 	}
 
@@ -120,3 +145,5 @@ void Ball::Fire(const sf::Vector2f& d, float s)
 	direction = d;
 	speed = s;
 }
+
+

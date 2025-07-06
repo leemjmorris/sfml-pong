@@ -2,13 +2,31 @@
 #include "SceneGame.h"
 #include "Bat.h"
 #include "Ball.h"
+#include "UiMgr.h"
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
 {
 }
 
+void SceneGame::AddScoreLeft()
+{
+	scoreLeft += 10;
+}
+
+void SceneGame::AddScoreRight()
+{
+	scoreRight += 10;
+}
+
+
 void SceneGame::Init()
 {
+	ScoreFont.loadFromFile("fonts/DS-DIGIT.TTF");
+
+	uiMgr = (UiMgr*)AddGameObject(new UiMgr("UI"));
+	uiMgr->SetFont(ScoreFont);
+
+	
 	float winWidth = FRAMEWORK.GetWindowBounds().width;
 	float winHeight = FRAMEWORK.GetWindowBounds().height;
 
@@ -23,8 +41,7 @@ void SceneGame::Init()
 	
 	ball = (Ball*)AddGameObject(new Ball("Ball"));
 	
-
-	ball->SetBat(batLeft);
+	ball->SetBat(batLeft, batRight);
 
 	Scene::Init();
 }
@@ -40,9 +57,19 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
+	if (scoreLeft >= 100 || scoreRight >= 100)
+	{
+		SetGameOver();
+		return;
+	}
+
 	if (!ballActive)
 	{
-		ball->SetPosition(batLeft->GetPosition());
+		sf::Vector2f batPos = batLeft->GetPosition();
+		float ballOffsetX = batLeft->GetSize().x * 0.5f + ball->GetRadius();
+
+		sf::Vector2f ballStartPos = batPos + sf::Vector2f(ballOffsetX, 0.f);
+		ball->SetPosition(ballStartPos);
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
@@ -57,5 +84,14 @@ void SceneGame::Update(float dt)
 
 void SceneGame::SetGameOver()
 {
+	batLeft->SetPaused(true);
+	batRight->SetPaused(true);
 	SCENE_MGR.ChangeScene(SceneIds::Game);
+}
+
+void SceneGame::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
+	uiMgr->SetScores(scoreLeft, scoreRight);
+	uiMgr->Draw(window);
 }

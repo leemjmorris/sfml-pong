@@ -39,6 +39,12 @@ void Bat::SetOrigin(Origins preset)
 	}
 }
 
+sf::Vector2f Bat::GetSize() const
+{
+	return shape.getSize();
+}
+
+
 void Bat::Init()
 {
 	shape.setSize({5.f, 100.f});
@@ -64,6 +70,8 @@ void Bat::Reset()
 
 void Bat::Update(float dt)
 {
+	if (isPaused) return;
+
 	if (name == "Left Bat")
 	{
 		direction.y = InputMgr::GetAxis(Axis::VerticalLeft);

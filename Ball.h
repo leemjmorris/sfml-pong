@@ -8,6 +8,10 @@ class Ball : public GameObject
 protected:
 	sf::CircleShape shape;
 
+	Bat* batLeft = nullptr;
+	Bat* batRight = nullptr;
+
+
 	float speed = 0.f;
 	sf::Vector2f direction;
 
@@ -26,7 +30,9 @@ public:
 	void SetRotation(float rot) override;
 	void SetScale(const sf::Vector2f& s) override;
 	void SetOrigin(const sf::Vector2f& o) override;
-	void SetOrigin(Origins preset) override;
+	void SetOrigin(Origins preset) override;	
+
+	float GetRadius() const;
 
 	void Init() override;
 	void Release() override;
@@ -35,7 +41,8 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void Fire(const sf::Vector2f& d, float s);
-	void SetBat(Bat* bat) { this->bat = bat; }
+	void SetBat(Bat* left, Bat* right);
+
 
 };
 
