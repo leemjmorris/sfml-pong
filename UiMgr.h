@@ -5,8 +5,11 @@ class UiMgr : public GameObject
 private:
     sf::Text scoreTextLeft;
     sf::Text scoreTextRight;
+    sf::Text restartText;
 
     sf::Font* font = nullptr;
+
+    bool showRestartText = false;
 
 public:
     UiMgr(const std::string& name);
@@ -21,6 +24,7 @@ public:
 
     void SetFont(const sf::Font& font);
 
+    void ShowRestartMessage(bool show);
 
 };
 

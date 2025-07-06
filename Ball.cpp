@@ -64,9 +64,19 @@ void Ball::Release()
 }
 
 void Ball::Reset()
-{
+{	
+	//SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
+	//scene->ballActive = true;
+
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	SetPosition({ bounds.width * 0.5f, bounds.height - 20.f });
+	sf::Vector2f batPos = batLeft->GetPosition();
+	float ballOffsetX = batLeft->GetSize().x * 0.5f + this->GetRadius();
+
+	sf::Vector2f ballStartPos = batPos + sf::Vector2f(ballOffsetX, 0.f);
+	this->SetPosition(ballStartPos);
+
+	float offset = batLeft->GetSize().x * 0.5f + shape.getRadius();
+	SetPosition(batPos + sf::Vector2f(offset, 0.f));
 
 	float radius = shape.getRadius();
 	minX = bounds.left + radius * 2.f;
@@ -76,9 +86,7 @@ void Ball::Reset()
 	maxY = bounds.top + bounds.height;
 
 	direction = { 0.f, 0.f };
-	speed = 0.f;
-
-	
+	speed = 0.f;	
 }
 
 void Ball::Update(float dt)
@@ -96,8 +104,17 @@ void Ball::Update(float dt)
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 		{
 			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
-			scene->AddScoreRight();
-			scene->SetGameOver();
+
+			if (!scene->IsGameOver())
+			{
+				scene->AddScoreRight();
+				scene->ballActive = false;
+				direction = { 0.f, 0.f };
+				speed = 0.f;
+				Reset();
+				//scene->SetGameOver();
+			}
+
 		}
 	}
 
@@ -106,8 +123,16 @@ void Ball::Update(float dt)
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 		{
 			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
-			scene->AddScoreLeft();
-			scene->SetGameOver();
+
+			if (!scene->IsGameOver())
+			{
+				scene->AddScoreLeft();
+				scene->ballActive = false;
+				direction = { 0.f, 0.f };
+				speed = 0.f;
+				Reset();
+				//scene->SetGameOver();
+			}
 		}
 	}
 

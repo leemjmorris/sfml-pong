@@ -48,8 +48,17 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	scoreLeft = 0;
+	scoreRight = 0;
+	
+	isGameOver = false;
 	ballActive = false;
 	ball->Reset();
+
+	batLeft->SetPaused(false);
+	batRight->SetPaused(false);
+
+	uiMgr->ShowRestartMessage(false);
 
 	Scene::Enter();
 }
@@ -57,11 +66,28 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	if (scoreLeft >= 100 || scoreRight >= 100)
+
+	if (!isGameOver && (scoreLeft >= 100 || scoreRight >= 100))
 	{
 		SetGameOver();
+		
+	
+
+		ball->Reset();		
+		batLeft->Reset();
+		batRight->Reset();
 		return;
 	}
+
+	if (isGameOver)
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::E))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
+		return;
+	}
+
 
 	if (!ballActive)
 	{
@@ -84,9 +110,15 @@ void SceneGame::Update(float dt)
 
 void SceneGame::SetGameOver()
 {
+	isGameOver = true;
+
 	batLeft->SetPaused(true);
 	batRight->SetPaused(true);
-	SCENE_MGR.ChangeScene(SceneIds::Game);
+	ballActive = false;
+
+	uiMgr->ShowRestartMessage(true);
+
+	//SCENE_MGR.ChangeScene(SceneIds::Game);
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

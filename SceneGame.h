@@ -16,7 +16,7 @@ protected:
 
 	Ball* ball = nullptr;
 
-	bool ballActive = false;
+	bool isGameOver = false;
 
 	int scoreLeft = 0;
 	int scoreRight = 0;
@@ -24,6 +24,8 @@ protected:
 public:
 	SceneGame();
 	~SceneGame() override = default;
+
+	bool ballActive = false;
 
 	void Init() override;
 	void Enter() override;
@@ -34,5 +36,8 @@ public:
 	void SetGameOver();
 	void AddScoreLeft();
 	void AddScoreRight();
+
+	bool IsGameOver() const { return isGameOver; }
+
 };
 
