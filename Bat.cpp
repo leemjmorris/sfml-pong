@@ -43,7 +43,7 @@ void Bat::Init()
 {
 	shape.setSize({5.f, 100.f});
 	shape.setFillColor(sf::Color::White);
-	SetOrigin(Origins::MR);
+	SetOrigin(Origins::MC);
 }
 
 void Bat::Release()
@@ -53,7 +53,7 @@ void Bat::Release()
 void Bat::Reset()
 {
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	SetPosition({ (bounds.width - bounds.width) + 20.f, bounds.height * 0.5f });
+	//SetPosition({ (bounds.width - bounds.width) + 20.f, bounds.height * 0.5f }); SceneGame에서 설정 해줌
 
 	sf::Vector2f size = shape.getSize();
 	minX = bounds.left + size.x * 0.5f;
@@ -64,7 +64,15 @@ void Bat::Reset()
 
 void Bat::Update(float dt)
 {
-	direction.y = InputMgr::GetAxis(Axis::Vertical);
+	if (name == "Left Bat")
+	{
+		direction.y = InputMgr::GetAxis(Axis::VerticalLeft);
+	}
+	else if (name == "Right Bat")
+	{
+		direction.y = InputMgr::GetAxis(Axis::VerticalRight);
+	}
+
 	sf::Vector2f pos = GetPosition() + direction * speed * dt;
 	pos.y = Utils::Clamp(pos.y, minY, maxY);
 	SetPosition(pos);

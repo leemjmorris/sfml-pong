@@ -7,7 +7,9 @@ class Ball;
 class SceneGame : public Scene
 {
 protected:
-	Bat* bat = nullptr;
+	Bat* batLeft = nullptr;
+	Bat* batRight = nullptr;
+
 	Ball* ball = nullptr;
 
 	bool ballActive = false;

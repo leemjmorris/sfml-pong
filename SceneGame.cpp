@@ -9,9 +9,23 @@ SceneGame::SceneGame() : Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
-	bat = (Bat*)AddGameObject(new Bat("Bat"));
+	float winWidth = FRAMEWORK.GetWindowBounds().width;
+	float winHeight = FRAMEWORK.GetWindowBounds().height;
+
+
+	batLeft = (Bat*)AddGameObject(new Bat("Left Bat"));
+	batLeft->Init();
+	batLeft->SetPosition({ 30.f, winHeight * 0.5f });
+
+	batRight = (Bat*)AddGameObject(new Bat("Right Bat"));
+	batRight->Init();
+	batRight->SetPosition({ winWidth - 30.f, winHeight * 0.5f });
+	
 	ball = (Ball*)AddGameObject(new Ball("Ball"));
-	ball->SetBat(bat);
+	
+
+	ball->SetBat(batLeft);
+
 	Scene::Init();
 }
 
@@ -27,7 +41,7 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 	if (!ballActive)
 	{
-		ball->SetPosition(bat->GetPosition());
+		ball->SetPosition(batLeft->GetPosition());
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
