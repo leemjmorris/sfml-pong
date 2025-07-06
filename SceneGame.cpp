@@ -32,6 +32,7 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	ballActive = false;
+	ball->Reset();
 
 	Scene::Enter();
 }

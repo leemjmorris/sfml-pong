@@ -58,37 +58,37 @@ void Ball::Reset()
 	SetPosition({ bounds.width * 0.5f, bounds.height - 20.f });
 
 	float radius = shape.getRadius();
-	minX = bounds.left + radius;
-	maxX = (bounds.left + bounds.width) - radius;
+	minX = bounds.left + radius * 2.f;
+	maxX = (bounds.left + bounds.width) - radius * 2.f;
 
-	minY = bounds.top + radius * 2.f;
-	maxY = bounds.top + bounds.height + 200.f;
+	minY = bounds.top + radius;
+	maxY = bounds.top + bounds.height;
 
 	direction = { 0.f, 0.f };
 	speed = 0.f;
+
+	
 }
 
 void Ball::Update(float dt)
 {
 	sf::Vector2f pos = GetPosition() + direction * speed * dt;
 
-	if (pos.x < minX)
+	if (pos.y < minY || pos.y > maxY)
 	{
-		pos.x = minX;
-		direction.x *= -1.f;
-	}
-	else if (pos.x > maxX)
-	{
-		pos.x = maxX;
-		direction.x *= -1.f;
-	}
-
-	if (pos.y < minY)
-	{
-		pos.y = minY;
 		direction.y *= -1.f;
 	}
-	else if (pos.y > maxY)
+
+	if (pos.x < minX)
+	{
+		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
+		{
+			SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
+			scene->SetGameOver();
+		}
+	}
+
+	if (pos.x > maxX)
 	{
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 		{
