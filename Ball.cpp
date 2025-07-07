@@ -57,6 +57,15 @@ void Ball::Init()
 	shape.setRadius(10.f);
 	shape.setFillColor(sf::Color::White);
 	SetOrigin(Origins::MC);
+
+	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
+
+	float radius = shape.getRadius();
+	minX = bounds.left + radius * 2.f;
+	maxX = (bounds.left + bounds.width) - radius * 2.f;
+
+	minY = bounds.top + radius;
+	maxY = bounds.top + bounds.height;
 }
 
 void Ball::Release()
@@ -64,11 +73,7 @@ void Ball::Release()
 }
 
 void Ball::Reset()
-{	
-	//SceneGame* scene = (SceneGame*)SCENE_MGR.GetCurrentScene();
-	//scene->ballActive = true;
-
-	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
+{
 	sf::Vector2f batPos = batLeft->GetPosition();
 	float ballOffsetX = batLeft->GetSize().x * 0.5f + this->GetRadius();
 
@@ -77,13 +82,6 @@ void Ball::Reset()
 
 	float offset = batLeft->GetSize().x * 0.5f + shape.getRadius();
 	SetPosition(batPos + sf::Vector2f(offset, 0.f));
-
-	float radius = shape.getRadius();
-	minX = bounds.left + radius * 2.f;
-	maxX = (bounds.left + bounds.width) - radius * 2.f;
-
-	minY = bounds.top + radius;
-	maxY = bounds.top + bounds.height;
 
 	direction = { 0.f, 0.f };
 	speed = 0.f;	
@@ -94,8 +92,15 @@ void Ball::Update(float dt)
 	sf::Vector2f pos = GetPosition() + direction * speed * dt;
 
 	float margin = shape.getRadius();
-	if (pos.y < minY + margin || pos.y > maxY - margin)
+	if (pos.y < minY + margin)
 	{
+		pos.y = minY + margin;
+		direction.y *= -1.f;
+	}
+
+	if (pos.y > maxY - margin)
+	{
+		pos.y = maxY - margin;
 		direction.y *= -1.f;
 	}
 
@@ -112,9 +117,7 @@ void Ball::Update(float dt)
 				direction = { 0.f, 0.f };
 				speed = 0.f;
 				Reset();
-				//scene->SetGameOver();
 			}
-
 		}
 	}
 
@@ -131,7 +134,6 @@ void Ball::Update(float dt)
 				direction = { 0.f, 0.f };
 				speed = 0.f;
 				Reset();
-				//scene->SetGameOver();
 			}
 		}
 	}
@@ -156,7 +158,6 @@ void Ball::Update(float dt)
 			pos.x = bounds.left - shape.getRadius();
 		}
 	}
-
 	SetPosition(pos);
 }
 

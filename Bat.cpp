@@ -59,7 +59,6 @@ void Bat::Release()
 void Bat::Reset()
 {
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	//SetPosition({ (bounds.width - bounds.width) + 20.f, bounds.height * 0.5f }); SceneGame에서 설정 해줌
 
 	sf::Vector2f size = shape.getSize();
 	minX = bounds.left + size.x * 0.5f;
