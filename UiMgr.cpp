@@ -35,7 +35,6 @@ void UiMgr::Init()
     scoreTextLeft.setFillColor(sf::Color::White);
     scoreTextLeft.setPosition(20.f, 20.f);
 
-
     scoreTextRight.setFont(*font);
     scoreTextRight.setCharacterSize(48);
     scoreTextRight.setFillColor(sf::Color::White);
