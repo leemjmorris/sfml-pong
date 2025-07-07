@@ -69,9 +69,7 @@ void SceneGame::Update(float dt)
 
 	if (!isGameOver && (scoreLeft >= 100 || scoreRight >= 100))
 	{
-		SetGameOver();
-		
-	
+		SetGameOver();	
 
 		ball->Reset();		
 		batLeft->Reset();
@@ -87,7 +85,6 @@ void SceneGame::Update(float dt)
 		}
 		return;
 	}
-
 
 	if (!ballActive)
 	{
@@ -117,8 +114,6 @@ void SceneGame::SetGameOver()
 	ballActive = false;
 
 	uiMgr->ShowRestartMessage(true);
-
-	//SCENE_MGR.ChangeScene(SceneIds::Game);
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

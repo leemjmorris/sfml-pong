@@ -81,7 +81,7 @@ void Scene::Draw(sf::RenderWindow& window)
 	//		}
 	//		return a->sortingOrder < b->sortingOrder;
 	//	}
-	//);
+	//); 람다식으로 사용하면 이런식.
 
 	for (auto obj : sortedObjects)
 	{

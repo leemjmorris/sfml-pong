@@ -49,7 +49,6 @@ void UiMgr::Init()
     sf::FloatRect bounds = restartText.getLocalBounds();
     restartText.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
     restartText.setPosition(FRAMEWORK.GetWindowBounds().width / 2.f, FRAMEWORK.GetWindowBounds().height / 2.f);
-
 }
 
 void UiMgr::Release()
