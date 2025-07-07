@@ -67,11 +67,11 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (!isGameOver && (scoreLeft >= 100 || scoreRight >= 100))
+	if (!isGameOver && (scoreLeft >= 100 || scoreRight >= 100)) //게임 오버 검사
 	{
 		SetGameOver();	
 
-		ball->Reset();		
+		ball->Reset();
 		batLeft->Reset();
 		batRight->Reset();
 		return;

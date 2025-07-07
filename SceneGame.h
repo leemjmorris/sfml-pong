@@ -38,6 +38,4 @@ public:
 	void AddScoreRight();
 
 	bool IsGameOver() const { return isGameOver; }
-
 };
-

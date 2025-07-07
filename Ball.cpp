@@ -3,8 +3,7 @@
 #include "Bat.h"
 #include "SceneGame.h"
 
-Ball::Ball(const std::string& name)
-	: GameObject(name)
+Ball::Ball(const std::string& name)	: GameObject(name)
 {
 }
 
